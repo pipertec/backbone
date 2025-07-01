@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,10 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Court Reporter</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      }
+    </script>
     <style>
       body {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+      }
+      @keyframes pulse-dramatic {
+        0%, 100% {
+            transform: scale(1);
+            opacity: 0.8;
+        }
+        50% {
+            transform: scale(1.4);
+            opacity: 1;
+        }
+      }
+      .animate-pulse-dramatic {
+          animation: pulse-dramatic 1.5s infinite ease-in-out;
       }
     </style>
 
@@ -24,9 +41,9 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="index-Dej-0PW3.js"></script>
+  <script type="module" crossorigin src="index-DLc-dbIO.js"></script>
 </head>
-  <body class="bg-gray-900">
+  <body>
     <div id="root"></div>
 </body>
 </html>
