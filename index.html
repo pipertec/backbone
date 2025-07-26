@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transcription Magic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Apply theme from localStorage to prevent FOUC
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                DEFAULT: '#0066ff',
+                '50': '#e0edff',
+                '100': '#cce0ff',
+                '200': '#a6caff',
+                '300': '#80b3ff',
+                '400': '#599dff',
+                '500': '#3387ff',
+                '600': '#0066ff',
+                '700': '#0052cc',
+                '800': '#003e99',
+                '900': '#002966'
+              },
+              neutral: {
+                '50': '#f8fafc',
+                '100': '#f1f5f9',
+                '200': '#e2e8f0',
+                '300': '#cbd5e1',
+                '400': '#94a3b8',
+                '500': '#64748b',
+                '600': '#475569',
+                '700': '#334155',
+                '800': '#1e293b',
+                '900': '#0f172a'
+              }
+            }
+          }
+        }
+      }
+    </script>
+  <style>
+    textarea::selection {
+      background-color: #ffd700; /* gold */
+      color: black;
+    }
+    .dark textarea::selection {
+      background-color: #fca510; /* darker yellow for dark mode */
+      color: black;
+    }
+    textarea.transcript-editor {
+      caret-color: #0f172a; /* neutral-900 */
+    }
+    .dark textarea.transcript-editor {
+      caret-color: #f8fafc; /* neutral-50 */
+    }
+  </style>
+
+<link rel="stylesheet" href="/index.css">
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.9.0",
+    "jspdf": "https://esm.sh/jspdf@^2.5.1",
+    "docx": "https://esm.sh/docx@^8.5.0"
+  }
+}
+</script>
+  <script type="module" crossorigin src="index-CeohIlJk.js"></script>
+</head>
+  <body class="bg-neutral-50 dark:bg-neutral-900 antialiased">
+    <div id="root"></div>
+  </body>
+</html>
