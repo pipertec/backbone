@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transcription Magic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Apply theme from localStorage to prevent FOUC
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              'google-blue': '#4285F4',
+              'google-red': '#DB4437',
+              'google-yellow': '#F4B400',
+              'google-green': '#0F9D58',
+              primary: { // Kept for any missed legacy classes, maps to google-blue
+                DEFAULT: '#4285F4',
+                '50': '#e0edff',
+                '100': '#cce0ff',
+                '200': '#a6caff',
+                '300': '#80b3ff',
+                '400': '#599dff',
+                '500': '#3387ff',
+                '600': '#4285F4',
+                '700': '#4285F4',
+                '800': '#003e99',
+                '900': '#002966'
+              },
+              neutral: {
+                '50': '#f8fafc',
+                '100': '#f1f5f9',
+                '200': '#e2e8f0',
+                '300': '#cbd5e1',
+                '400': '#94a3b8',
+                '500': '#64748b',
+                '600': '#475569',
+                '700': '#334155',
+                '800': '#1e293b',
+                '900': '#0f172a'
+              }
+            }
+          }
+        }
+      }
+    </script>
+  <style>
+    textarea::selection {
+      background-color: #F4B400; /* google-yellow */
+      color: black;
+    }
+    .dark textarea::selection {
+      background-color: #F4B400; /* google-yellow */
+      color: black;
+    }
+    textarea.transcript-editor {
+      caret-color: #0f172a; /* neutral-900 */
+    }
+    .dark textarea.transcript-editor {
+      caret-color: #f8fafc; /* neutral-50 */
+    }
+  </style>
+  <style>
+    @keyframes pulsateGlow {
+      0%, 100% {
+        color: #4285F4; /* google-blue */
+        filter: drop-shadow(0 0 4px #4285F4) drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+      }
+      25% {
+        color: #DB4437; /* google-red */
+        filter: drop-shadow(0 0 8px #DB4437) drop-shadow(0 0 16px rgba(219, 68, 55, 0.7));
+      }
+      50% {
+        color: #F4B400; /* google-yellow */
+        filter: drop-shadow(0 0 8px #F4B400) drop-shadow(0 0 16px rgba(244, 180, 0, 0.7));
+      }
+      75% {
+        color: #0F9D58; /* google-green */
+        filter: drop-shadow(0 0 8px #0F9D58) drop-shadow(0 0 16px rgba(15, 157, 88, 0.7));
+      }
+    }
+    .pulsating-icon {
+      animation: pulsateGlow 5s infinite ease-in-out;
+    }
+  </style>
+
+<link rel="stylesheet" href="/index.css">
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.9.0",
+    "jspdf": "https://esm.sh/jspdf@^2.5.1",
+    "docx": "https://esm.sh/docx@^8.5.0"
+  }
+}
+</script>
+  <script type="module" crossorigin src="encrypt.js"></script>
+</head>
+  <body class="bg-neutral-50 dark:bg-neutral-900 antialiased">
+    <div id="root"></div>
+  </body>
+</html>
