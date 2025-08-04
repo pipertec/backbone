@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yahoo Finance RSS Feed Viewer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar styling for a better aesthetic */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #4b5563;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #6b7280;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 p-4 sm:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <!-- Page Title -->
+        <h1 class="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12 text-blue-400">
+            Yahoo Finance News Feed
+        </h1>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="text-center text-lg text-gray-400 my-8">
+            Loading news articles...
+        </div>
+
+        <!-- Container for news articles -->
+        <div id="news-container" class="space-y-6 sm:space-y-8">
+            <!-- News articles will be injected here by JavaScript -->
+        </div>
+
+        <!-- Error Message (hidden by default) -->
+        <div id="error-message" class="hidden text-center text-red-400 my-8">
+            <p class="font-bold">Failed to load news.</p>
+            <p>Please check your internet connection or try again later.</p>
+        </div>
+    </div>
+
+    <script>
+        // Self-contained JavaScript for fetching and rendering the RSS feed
+        // Using a CORS proxy to bypass cross-origin restrictions
+        const RSS_FEED_URL = 'https://api.allorigins.win/raw?url=https://www.yahoo.com/news/rss/finance';
+        const newsContainer = document.getElementById('news-container');
+        const loadingIndicator = document.getElementById('loading');
+        const errorMessage = document.getElementById('error-message');
+
+        /**
+         * Asynchronously fetches and parses an RSS feed from a given URL.
+         * @returns {Promise<Document | null>} A promise that resolves to the parsed XML document, or null on error.
+         */
+        async function fetchRssFeed() {
+            try {
+                // Use fetch to get the XML data from the Yahoo Finance RSS feed
+                const response = await fetch(RSS_FEED_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const xmlText = await response.text();
+
+                // Use DOMParser to parse the XML string into a document object
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+                return xmlDoc;
+            } catch (error) {
+                console.error('Error fetching or parsing RSS feed:', error);
+                return null;
+            }
+        }
+
+        /**
+         * Renders a single news article card to the DOM.
+         * @param {Element} itemElement The XML <item> element from the RSS feed.
+         */
+        function renderNewsItem(itemElement) {
+            // Extract the title, link, and description from the XML item
+            const title = itemElement.querySelector('title')?.textContent || 'No title available';
+            const link = itemElement.querySelector('link')?.textContent || '#';
+            const description = itemElement.querySelector('description')?.textContent || 'No description available';
+            const pubDate = itemElement.querySelector('pubDate')?.textContent;
+
+            // Create the main article container
+            const article = document.createElement('article');
+            article.className = 'bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300';
+
+            // Create the title element with a link
+            const titleElement = document.createElement('h2');
+            titleElement.className = 'text-xl sm:text-2xl font-semibold mb-2';
+            titleElement.innerHTML = `<a href="${link}" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 transition-colors duration-300">${title}</a>`;
+
+            // Create the description element
+            const descriptionElement = document.createElement('p');
+            descriptionElement.className = 'text-gray-400 mb-4';
+            descriptionElement.textContent = description;
+
+            // Create the date element
+            const dateElement = document.createElement('p');
+            dateElement.className = 'text-sm text-gray-500 italic';
+            dateElement.textContent = pubDate ? `Published: ${new Date(pubDate).toLocaleString()}` : '';
+
+            // Append all elements to the article
+            article.appendChild(titleElement);
+            article.appendChild(descriptionElement);
+            article.appendChild(dateElement);
+
+            // Append the new article to the main news container
+            newsContainer.appendChild(article);
+        }
+
+        /**
+         * Main function to fetch the feed and render all news articles.
+         */
+        async function fetchAndRenderNews() {
+            // Show the loading indicator
+            loadingIndicator.classList.remove('hidden');
+            errorMessage.classList.add('hidden');
+            newsContainer.innerHTML = ''; // Clear previous content
+
+            const xmlDoc = await fetchRssFeed();
+
+            if (xmlDoc) {
+                const items = xmlDoc.querySelectorAll('item');
+
+                if (items.length > 0) {
+                    items.forEach(renderNewsItem);
+                    loadingIndicator.classList.add('hidden');
+                } else {
+                    // No items found in the feed
+                    loadingIndicator.classList.add('hidden');
+                    errorMessage.textContent = 'No news articles found in the feed.';
+                    errorMessage.classList.remove('hidden');
+                }
+            } else {
+                // If fetchRssFeed returned null (an error occurred)
+                loadingIndicator.classList.add('hidden');
+                errorMessage.classList.remove('hidden');
+            }
+        }
+
+        // Run the main function when the window loads
+        window.onload = fetchAndRenderNews;
+    </script>
+
+</body>
+</html>
