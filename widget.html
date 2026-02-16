@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Private Comments Widget</title>
+    <script src="https://js.zohostatic.com/support/developer_sdk/v1/js/ZohoDeskClientSDK.min.js"></script>
+    <style>
+        body {
+            font-family: 'Proxima Nova', Arial, sans-serif;
+            font-size: 14px;
+            margin: 0;
+            padding: 10px;
+            color: #333;
+        }
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+        .error {
+            color: #d9534f;
+            padding: 10px;
+            background: #fdf7f7;
+            border: 1px solid #d9534f;
+            border-radius: 4px;
+        }
+        .comment-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .comment-header {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .ticket-ref {
+            font-weight: bold;
+            color: #1980e6;
+        }
+        .comment-body {
+            line-height: 1.4;
+        }
+        h3 {
+            font-size: 16px;
+            margin-top: 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h3>Last 10 Tickets (Private Comments)</h3>
+    <div id="content">
+        <div class="loading">Initializing widget...</div>
+    </div>
+
+    <script>
+        // Configuration
+        const CONNECTION_LINK_NAME = "zohodesk"; // Must match manifest.json
+        
+        // 1. Initialize the Widget
+        ZOHODESK.extension.onload().then(function (App) {
+            
+            // 2. Get Current Ticket Context
+            ZOHODESK.get('ticket').then(function (ticketData) {
+                const ticket = ticketData.ticket;
+                const contactId = ticket.contactId;
+
+                if (!contactId) {
+                    renderError("No Contact ID found on this ticket.");
+                    return;
+                }
+
+                updateStatus(`Fetching history for Contact: ${contactId}...`);
+                fetchLastTenTickets(contactId);
+
+            }).catch(function (err) {
+                renderError("Failed to fetch ticket context: " + JSON.stringify(err));
+            });
+        });
+
+        // 3. Fetch Last 10 Tickets using the Connection
+        function fetchLastTenTickets(contactId) {
+            const reqObj = {
+                url: `https://desk.zoho.com/api/v1/tickets?contactId=${contactId}&limit=10&sortBy=-createdTime`,
+                type: 'GET',
+                connectionLinkName: zohodesk,
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            };
+
+            ZOHODESK.request(reqObj).then(function (response) {
+                // Parse response. Body might be a string or object depending on SDK version
+                let data = (typeof response.body === 'string') ? JSON.parse(response.body) : response.body;
+                
+                // If the response is wrapped in a 'data' property (standard Zoho API)
+                const tickets = data.data || data; 
+
+                if (!tickets || tickets.length === 0) {
+                    renderError("No previous tickets found for this contact.");
+                    return;
+                }
+
+                updateStatus(`Found ${tickets.length} tickets. Scanning for private comments...`);
+                fetchAllComments(tickets);
+
+            }).catch(function (err) {
+                renderError("Error fetching tickets via connection: " + JSON.stringify(err));
+            });
+        }
+
+        // 4. Fetch Comments for all tickets (Parallel Processing)
+        function fetchAllComments(tickets) {
+            const commentPromises = tickets.map(ticket => {
+                return new Promise((resolve) => {
+                    const reqObj = {
+                        url: `https://desk.zoho.com/api/v1/tickets/${ticket.id}/comments`,
+                        type: 'GET',
+                        connectionLinkName: CONNECTION_LINK_NAME,
+                        headers: { "Content-Type": "application/json" }
+                    };
+
+                    ZOHODESK.request(reqObj).then(function (response) {
+                        let data = (typeof response.body === 'string') ? JSON.parse(response.body) : response.body;
+                        let comments = data.data || data;
+                        
+                        // Filter for PRIVATE comments only
+                        // Note: API 'isPublic' property might be boolean true/false or string "true"/"false"
+                        const privateComments = comments.filter(c => String(c.isPublic) === "false");
+                        
+                        resolve({
+                            ticketNumber: ticket.ticketNumber,
+                            comments: privateComments
+                        });
+                    }).catch(err => {
+                        console.error("Failed to fetch comments for ticket " + ticket.id, err);
+                        resolve({ ticketNumber: ticket.ticketNumber, comments: [] }); // Resolve empty on error to keep others going
+                    });
+                });
+            });
+
+            // Wait for all requests to finish
+            Promise.all(commentPromises).then(results => {
+                renderComments(results);
+            });
+        }
+
+        // 5. Render the Results
+        function renderComments(results) {
+            const container = document.getElementById('content');
+            container.innerHTML = ""; // Clear loading message
+
+            let totalFound = 0;
+
+            results.forEach(item => {
+                if (item.comments.length > 0) {
+                    item.comments.forEach(comment => {
+                        totalFound++;
+                        const card = document.createElement('div');
+                        card.className = 'comment-card';
+                        
+                        // Format the date nicely
+                        const date = new Date(comment.createdTime).toLocaleString();
+
+                        card.innerHTML = `
+                            <div class="comment-header">
+                                <span class="ticket-ref">#${item.ticketNumber}</span>
+                                <span>${date}</span>
+                            </div>
+                            <div class="comment-body">
+                                ${comment.content}
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                }
+            });
+
+            if (totalFound === 0) {
+                container.innerHTML = "<p>No private comments found in the last 10 tickets.</p>";
+            }
+        }
+
+        // Helper: Update Status Text
+        function updateStatus(msg) {
+            document.getElementById('content').innerHTML = `<div class="loading">${msg}</div>`;
+        }
+
+        // Helper: Render Error
+        function renderError(msg) {
+            document.getElementById('content').innerHTML = `<div class="error">${msg}</div>`;
+        }
+    </script>
+</body>
+</html>
