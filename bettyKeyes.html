@@ -11,23 +11,10 @@
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
         }
-        <!-- .hero-gradient {
+        .hero-gradient {
             background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-        } -->
-		
-		.hero-gradient {
-    /* Layer 1: The Image (on top) | Layer 2: The Gradient (underneath) */
-    background: 
-        url('bettycut7.png') no-repeat left / contain, 
-        linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-    
-    /* Ensure the section has height to actually show the background */
-    min-height: 65vh;
-    width: 100%;
-}
-		
-		
-		
+        }
+			
         .card-hover:hover {
             transform: translateY(-5px);
             transition: all 0.3s ease;
@@ -69,7 +56,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <header id="home" class="hero-gradient text-white py-20 px-4">
+    <!-- <header id="home" class="hero-gradient text-white py-20 px-4">
         <div class="max-w-7xl mx-auto flex flex-col items-center text-center">
             <h1 class="text-4xl md:text-6xl font-extrabold mb-6">Realtime Voice Writing Educational Resources</h1>
             <p class="text-xl md:text-2xl text-blue-100 max-w-3xl mb-10">
@@ -80,7 +67,35 @@
                 <a href="#resources" class="border border-white/30 bg-white/10 backdrop-blur-sm px-8 py-3 rounded-full font-bold hover:bg-white/20 transition">Free Resources</a>
             </div>
         </div>
-    </header>
+    </header> -->
+	
+	<header id="home" class="relative overflow-hidden text-white py-20 px-4 min-h-[500px] flex items-center">
+    <div class="absolute inset-0 z-0">
+        <img 
+            src="bettycut7.png" 
+            alt="Realtime Voice Writing Backdrop" 
+            class="w-full h-full object-cover object-center"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-transparent"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto flex flex-col items-center text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">
+            Realtime Voice Writing Educational Resources
+        </h1>
+        <p class="text-xl md:text-2xl text-blue-100 max-w-3xl mb-10 drop-shadow-md">
+            A private training organization depended upon by educational institutions for professional realtime performance standards.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="#products" class="bg-white text-blue-700 px-8 py-3 rounded-full font-bold shadow-lg hover:bg-blue-50 transition">
+                View Products
+            </a>
+            <a href="#resources" class="border border-white/30 bg-white/10 backdrop-blur-sm px-8 py-3 rounded-full font-bold hover:bg-white/20 transition">
+                Free Resources
+            </a>
+        </div>
+    </div>
+</header>
 
     <!-- Mission Section -->
     <section id="about" class="py-20 px-4 bg-white">
