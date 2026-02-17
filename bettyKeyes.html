@@ -11,9 +11,23 @@
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
         }
-        .hero-gradient {
+        <!-- .hero-gradient {
             background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-        }
+        } -->
+		
+		.hero-gradient {
+    /* Layer 1: The Image (on top) | Layer 2: The Gradient (underneath) */
+    background: 
+        url('bettycut7.png') no-repeat left / contain, 
+        linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    
+    /* Ensure the section has height to actually show the background */
+    min-height: 65vh;
+    width: 100%;
+}
+		
+		
+		
         .card-hover:hover {
             transform: translateY(-5px);
             transition: all 0.3s ease;
