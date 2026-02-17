@@ -74,7 +74,7 @@
             Realtime Voice Writing Resources   </h1> 
 		
         <p class="text-xl md:text-1xl text-blue-100 max-w-3xl mb-10 drop-shadow-md">
-            A private training organization for professional realtime performance standards.
+            Educational training for professional realtime performance standards.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
             <a href="#products" class="bg-white text-blue-700 px-8 py-3 rounded-full font-bold shadow-lg hover:bg-blue-50 transition">
@@ -150,21 +150,18 @@
                         <svg class="w-24 h-24 opacity-20 absolute" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
                         <div class="text-center relative z-10 p-6">
                             <span class="block text-sm uppercase tracking-widest mb-2 opacity-80">Manual</span>
-                            <h4 class="text-xl font-bold">Realtime Voice Writing with Dragon</h4>
+                            <h4 class="text-xl font-bold">Voice Writing Method Mastering Transcription with Speech Recognition
+</h4>
                         </div>
                     </div>
                     <div class="p-8">
                         <p class="text-slate-600 text-sm mb-6 leading-relaxed">
                             A comprehensive guide to mastering Dragon NaturallySpeaking for high-speed voice writing and professional transcription.
                         </p>
-						
-                        <button class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition">Package Details</button>
-						<div id="paypal-container-SJK2KJ7PE7CSQ"></div>
-<script>
-  paypal.HostedButtons({
-    hostedButtonId: "SJK2KJ7PE7CSQ",
-  }).render("#paypal-container-SJK2KJ7PE7CSQ")
-</script>
+						<a href="https://www.paypal.com/ncp/payment/LUWW7M8TR8VEE" class="inline-block w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition text-center">
+							Package Details
+						</a>
+
                     </div>
                 </div>
 
@@ -177,12 +174,64 @@
                             <h4 class="text-xl font-bold">Realtime Theory for Voice Writing</h4>
                         </div>
                     </div>
-                    <div class="p-8">
+                    <!-- <div class="p-8">
                         <p class="text-slate-600 text-sm mb-6 leading-relaxed">
                             Master the core theories behind instantaneous translation. Essential for students aiming for high accuracy and certification.
                         </p>
-                        <button class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition">Purchase Details</button>
-                    </div>
+						<button onclick="window.location.href='https://www.paypal.com/ncp/payment/LUWW7M8TR8VEE'" class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition">             Package Details
+                         </button>
+                       
+                    </div> -->
+					<button onclick="toggleModal()" class="px-6 py-2 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800 transition">
+    View Package
+</button>
+<div class="p-8">
+                        <p class="text-slate-600 text-sm mb-6 leading-relaxed">
+                            Master the core theories behind instantaneous translation. Essential for students aiming for high accuracy and certification.
+                        </p>
+<div id="paymentModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    
+    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden transform transition-all">
+        
+        <div class="flex justify-end p-4 pb-0">
+            <button onclick="toggleModal()" class="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+        </div>
+
+        <div class="p-8 pt-2">
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Instantaneous Translation</h3>
+            <p class="text-slate-600 text-sm mb-6 leading-relaxed">
+                Master the core theories behind instantaneous translation. Essential for students aiming for high accuracy and certification.
+            </p>
+            
+            <button onclick="window.location.href='https://www.paypal.com/ncp/payment/LUWW7M8TR8VEE'" 
+                    class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition">
+                Buy Now
+            </button>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    function toggleModal() {
+        const modal = document.getElementById('paymentModal');
+        // Toggle between display: none and display: flex
+        if (modal.classList.contains('hidden')) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    }
+
+    // Optional: Close modal if user clicks outside the white box
+    window.onclick = function(event) {
+        const modal = document.getElementById('paymentModal');
+        if (event.target == modal) {
+            toggleModal();
+        }
+    }
+</script>
                 </div>
 
                 <!-- Technical Guide -->
@@ -198,7 +247,11 @@
                         <p class="text-slate-600 text-sm mb-6 leading-relaxed">
                             Instructions on bridging Dragon with top Computer-Aided Transcription (CAT) software for a seamless workflow.
                         </p>
-                        <button class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition">Purchase Details</button>
+						<button onclick="window.location.href='https://www.paypal.com/ncp/payment/LUWW7M8TR8VEE'" 
+                           class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition">
+                           Package Details
+                        </button>
+                       
                     </div>
                 </div>
             </div>
