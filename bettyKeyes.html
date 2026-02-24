@@ -26,7 +26,6 @@
 </head>
 <body class="bg-slate-50 text-slate-900">
 
-    <!-- Navigation -->
     <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
@@ -48,7 +47,6 @@
                 </div>
             </div>
         </div>
-        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-4">
             <a href="#home" class="block text-slate-600">Home</a>
             <a href="#about" class="block text-slate-600">About</a>
@@ -58,7 +56,6 @@
         </div>
     </nav>
 
-   
 	<header id="home" class="relative overflow-hidden text-white py-20 px-4 min-h-[500px] flex items-center">
     <div class="absolute inset-0 z-0">
         <img 
@@ -87,7 +84,6 @@
     </div>
 </header>
 
-    <!-- Mission Section -->
     <section id="about" class="py-5 px-4 bg-white">
         <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -135,7 +131,6 @@
         </div>
     </section>
 
-    <!-- Products Section -->
     <section id="products" class="py-5 px-4 bg-white border-t border-slate-100">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
@@ -144,8 +139,7 @@
             </div>
             
             <div class="grid md:grid-cols-3 gap-8">
-                  <!-- Technical Guide -->
-                <div class="bg-slate-50 border border-slate-200 rounded-3xl overflow-hidden card-hover">
+                  <div class="bg-slate-50 border border-slate-200 rounded-3xl overflow-hidden card-hover">
                     <div class="h-48 bg-slate-700 flex items-center justify-center text-white">
                         <svg class="w-24 h-24 opacity-20 absolute" fill="currentColor" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
                         <div class="text-center relative z-10 p-6">
@@ -157,7 +151,7 @@
     
     <button onclick="toggleDrawer3()" class="w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors focus:outline-none">
         <span class="text-lg font-bold text-slate-900 tracking-tight">EclipseVox 12 Package Details</span>
-        <svg id="drawerArrow" class="w-5 h-5 text-slate-500 transition-transform duration-300 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg id="drawerArrow3" class="w-5 h-5 text-slate-500 transition-transform duration-300 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
         </svg>
     </button>
@@ -166,8 +160,10 @@
         <div class="p-8 pt-0 border-t border-slate-100">
             <div class="space-y-4 pt-6">
 			<p class="text-sm font-medium mb-1">
-    <a href="12thEdition.pdf" class="text-blue-600 hover:underline">
-Table of Contents    </a>
+                <button onclick="openModal('12thEdition.pdf', 'EclipseVox 12 Table of Contents')" class="text-blue-600 hover:underline">
+                    Table of Contents
+                </button>
+            </p>
                 <p class="text-slate-600 text-sm leading-relaxed">
                     This training manual gives step-by-step instructions on how to utilize EclipseVox for realtime voice writing as a court reporter.
                 </p>
@@ -205,26 +201,8 @@ Table of Contents    </a>
         </div>
     </div>
 </div>
-<script>
-    function toggleDrawer3() {
-        const content = document.getElementById('drawerContent3');
-        const arrow = document.getElementById('drawerArrow');
-        
-        // Checks if height is 0 (closed) or explicitly set
-        if (content.style.maxHeight === '0px') {
-            // Expands to the exact pixel height of the internal content
-            content.style.maxHeight = content.scrollHeight + "px";
-            arrow.style.transform = "rotate(180deg)";
-        } else {
-            // Shrinks back to zero
-            content.style.maxHeight = "0px";
-            arrow.style.transform = "rotate(0deg)";
-        }
-    }
-	</script>
                 </div>
 
-                <!-- Theory Manual -->
                 <div class="bg-slate-50 border border-slate-200 rounded-3xl overflow-hidden card-hover">
                     <div class="h-48 bg-indigo-600 flex items-center justify-center text-white">
                         <svg class="w-24 h-24 opacity-20 absolute" fill="currentColor" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
@@ -246,8 +224,10 @@ Table of Contents    </a>
         <div class="p-8 pt-0 border-t border-slate-100">
             <div class="space-y-4 pt-6">
 			<p class="text-sm font-medium mb-1">
-    <a href="11thEdition.pdf" class="text-blue-600 hover:underline">
-Table of Contents    </a>
+                <button onclick="openModal('11thEdition.pdf', 'EclipseVox 11 Table of Contents')" class="text-blue-600 hover:underline">
+                    Table of Contents
+                </button>
+            </p>
                 <p class="text-slate-600 text-sm leading-relaxed">
                     This training manual gives step-by-step instructions on how to utilize EclipseVox for realtime voice writing as a court reporter.
                 </p>
@@ -285,27 +265,8 @@ Table of Contents    </a>
         </div>
     </div>
 </div>
-
-<script>
-    function toggleDrawer() {
-        const content = document.getElementById('drawerContent');
-        const arrow = document.getElementById('drawerArrow');
-        
-        // Checks if height is 0 (closed) or explicitly set
-        if (content.style.maxHeight === '0px') {
-            // Expands to the exact pixel height of the internal content
-            content.style.maxHeight = content.scrollHeight + "px";
-            arrow.style.transform = "rotate(180deg)";
-        } else {
-            // Shrinks back to zero
-            content.style.maxHeight = "0px";
-            arrow.style.transform = "rotate(0deg)";
-        }
-    }
-</script>
                 </div>
-   <!-- Dragon Guide -->
-                <div class="bg-slate-50 border border-slate-200 rounded-3xl overflow-hidden card-hover">
+   <div class="bg-slate-50 border border-slate-200 rounded-3xl overflow-hidden card-hover">
                     <div class="h-48 bg-blue-600 flex items-center justify-center text-white">
                         <svg class="w-24 h-24 opacity-20 absolute" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
                         <div class="text-center relative z-10 p-6">
@@ -326,8 +287,10 @@ Table of Contents    </a>
         <div class="p-8 pt-0 border-t border-slate-100">
             <div class="space-y-4 pt-6">
 			<p class="text-sm font-medium mb-1">
-    <a href="8thEdition.pdf" class="text-blue-600 hover:underline">
-Table of Contents    </a>
+                <button onclick="openModal('8thEdition.pdf', '8th Edition Table of Contents')" class="text-blue-600 hover:underline">
+                    Table of Contents
+                </button>
+            </p>
                 <p class="text-slate-600 text-sm leading-relaxed font-medium">
 				   Includes SpeedMaster speed-building software!
                 </p>
@@ -357,21 +320,6 @@ Table of Contents    </a>
         </div>
     </div>
 </div>
-
-<script>
-    function toggleDrawer2() {
-        const content = document.getElementById('drawerContent2');
-        const arrow = document.getElementById('drawerArrow2');
-        
-        if (content.style.maxHeight === '0px') {
-            content.style.maxHeight = content.scrollHeight + "px";
-            arrow.style.transform = "rotate(180deg)";
-        } else {
-            content.style.maxHeight = "0px";
-            arrow.style.transform = "rotate(0deg)";
-        }
-    }
-</script>
                 </div>
               
             </div>
@@ -379,7 +327,6 @@ Table of Contents    </a>
 		
     </section>
 
-    <!-- Resources / Handouts Section -->
     <section id="resources" class="py-5 px-4 bg-slate-50">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
@@ -388,8 +335,7 @@ Table of Contents    </a>
             </div>
             
             <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
-                 <!-- Speed Master -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 card-hover">
+                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 card-hover">
                     <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
                     </div>
@@ -402,8 +348,7 @@ Table of Contents    </a>
                 </div>
 				
 				
-				<!-- Bridge Viewer -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 card-hover">
+				<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 card-hover">
                     <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                     </div>
@@ -415,49 +360,45 @@ Table of Contents    </a>
                     </a>
                 </div>
 
-                <!-- Hyperkeys -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 card-hover">
                     <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 mb-6">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
                     </div>
                     <h4 class="font-bold text-lg mb-3">Hyperkeys Guide</h4>
                     <p class="text-slate-500 text-sm mb-6">Main editing keystrokes to focus on when learning.</p>
-                    <a href="HyperKeysGuide.pdf" class="text-blue-600 font-semibold hover:underline flex items-center">
-                        Download PDF
+                    <button onclick="openModal('HyperKeysGuide.pdf', 'HyperKeys Guide')" class="text-blue-600 font-semibold hover:underline flex items-center">
+                        View Guide
                         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    </a>
+                    </button>
                 </div>
 
-                <!-- Keystroke Comparison -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 card-hover">
                     <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 mb-6">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                     </div>
                     <h4 class="font-bold text-lg mb-3">Standard vs Hyper</h4>
                     <p class="text-slate-500 text-sm mb-6">Comparing standard editing vs Hyperkeys efficiency.</p>
-                    <a href="EditingKeystrokes.pdf" class="text-blue-600 font-semibold hover:underline flex items-center">
+                    <button onclick="openModal('EditingKeystrokes.pdf', 'Standard vs Hyper Comparison')" class="text-blue-600 font-semibold hover:underline flex items-center">
                         View Handout
                         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    </a>
+                    </button>
                 </div>
 
-                <!-- Team Editing -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 card-hover">
                     <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 mb-6">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                     </div>
                     <h4 class="font-bold text-lg mb-3">Team Editing</h4>
                     <p class="text-slate-500 text-sm mb-6">Connecting with your Scopist for practice sessions.</p>
-                    <a href="TeamEditing.pdf" class="text-blue-600 font-semibold hover:underline flex items-center">
-                        Download Setup
+                    <button onclick="openModal('TeamEditing.pdf', 'Team Editing Setup')" class="text-blue-600 font-semibold hover:underline flex items-center">
+                        View Setup
                         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="py-5 px-4 bg-white border-t border-slate-100">
         <div class="max-w-3xl mx-auto text-center">
             <h2 class="text-3xl font-bold mb-8">Get In Touch</h2>
@@ -467,7 +408,7 @@ Table of Contents    </a>
                         <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     </div>
                     <h5 class="font-bold text-slate-800">Email Us</h5>
-                    <p class="text-blue-600 font-medium">info@realtimeuniversity.com</p>
+                    <a href="mailto:info@realtimeuniversity.com" class="text-blue-600 font-medium hover:underline">info@realtimeuniversity.com</a>
                 </div>
                 <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
                     <div class="text-slate-600 mb-2">
@@ -483,7 +424,6 @@ Table of Contents    </a>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="bg-slate-900 text-slate-400 py-12 px-4">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0 text-center md:text-left">
             <div>
@@ -493,21 +433,96 @@ Table of Contents    </a>
                 </div>
                 <p class="text-sm">© 2006-2026 Realtime University. All Rights Reserved.</p>
             </div>
-            <div class="flex space-x-6 text-sm">
-                <a href="#" class="hover:text-white"></a>
-                <a href="#" class="hover:text-white"></a>
-                <a href="#" class="hover:text-white"></a>
-            </div>
-            <div class="text-xs italic opacity-50">
-                
-            </div>
         </div>
     </footer>
 
+    <div id="pdfModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm transition-opacity duration-300">
+        <div class="bg-white w-full max-w-4xl h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden relative">
+            
+            <div class="flex items-center justify-between p-5 border-b border-slate-200 bg-slate-50">
+                <h3 id="modalTitle" class="text-xl font-bold text-slate-800">Resources</h3>
+                <button onclick="closeModal()" class="p-2 bg-white border border-slate-200 hover:bg-slate-100 rounded-full transition-colors focus:outline-none">
+                    <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex-1 w-full h-full bg-slate-200 overflow-hidden relative">
+                <iframe id="pdfViewer" src="" type="application/pdf" class="absolute inset-0 w-full h-full border-none"></iframe>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // MOBILE NAVIGATION MENU
         function toggleMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
+        }
+
+        // PDF MODAL LOGIC
+        function openModal(pdfUrl, title) {
+            const modal = document.getElementById('pdfModal');
+            const viewer = document.getElementById('pdfViewer');
+            const titleEl = document.getElementById('modalTitle');
+            
+            titleEl.innerText = title;
+            viewer.src = pdfUrl + "#view=FitH&scrollbar=1&toolbar=0&navpanes=0"; 
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('pdfModal');
+            const viewer = document.getElementById('pdfViewer');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            viewer.src = ''; 
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal if clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('pdfModal');
+            if (event.target == modal) { closeModal(); }
+        }
+
+        // PRODUCT DRAWER TOGGLES
+        function toggleDrawer() {
+            const content = document.getElementById('drawerContent');
+            const arrow = document.getElementById('drawerArrow');
+            if (content.style.maxHeight === '0px' || content.style.maxHeight === '') {
+                content.style.maxHeight = content.scrollHeight + "px";
+                arrow.style.transform = "rotate(180deg)";
+            } else {
+                content.style.maxHeight = "0px";
+                arrow.style.transform = "rotate(0deg)";
+            }
+        }
+        function toggleDrawer2() {
+            const content = document.getElementById('drawerContent2');
+            const arrow = document.getElementById('drawerArrow2');
+            if (content.style.maxHeight === '0px' || content.style.maxHeight === '') {
+                content.style.maxHeight = content.scrollHeight + "px";
+                arrow.style.transform = "rotate(180deg)";
+            } else {
+                content.style.maxHeight = "0px";
+                arrow.style.transform = "rotate(0deg)";
+            }
+        }
+        function toggleDrawer3() {
+            const content = document.getElementById('drawerContent3');
+            const arrow = document.getElementById('drawerArrow3');
+            if (content.style.maxHeight === '0px' || content.style.maxHeight === '') {
+                content.style.maxHeight = content.scrollHeight + "px";
+                arrow.style.transform = "rotate(180deg)";
+            } else {
+                content.style.maxHeight = "0px";
+                arrow.style.transform = "rotate(0deg)";
+            }
         }
     </script>
 </body>
