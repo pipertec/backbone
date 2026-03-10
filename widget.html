@@ -1,202 +1,248 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Private Comments Widget</title>
-    <script src="https://js.zohostatic.com/support/developer_sdk/v1/js/ZohoDeskClientSDK.min.js"></script>
+    <title>Zoho Desk - Apps</title>
     <style>
-        body {
-            font-family: 'Proxima Nova', Arial, sans-serif;
-            font-size: 14px;
-            margin: 0;
-            padding: 10px;
-            color: #333;
-        }
-        .loading {
-            color: #666;
-            font-style: italic;
-        }
-        .error {
-            color: #d9534f;
-            padding: 10px;
-            background: #fdf7f7;
-            border: 1px solid #d9534f;
-            border-radius: 4px;
-        }
-        .comment-card {
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            padding: 10px;
-            margin-bottom: 10px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .comment-header {
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .ticket-ref {
-            font-weight: bold;
-            color: #1980e6;
-        }
-        .comment-body {
+        /* Base container styling */
+        #ticket-history-container {
+            font-family: sans-serif;
             line-height: 1.4;
+            font-size: 13px;
+            text-align: left;
         }
-        h3 {
-            font-size: 16px;
-            margin-top: 0;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 8px;
+
+        /* Header Section for Name/Status */
+        #header-section {
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        /* --- Search Box Styles --- */
+        .search-wrapper {
+            margin: 10px 0;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            background: #f9f9f9;
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #eee;
+            justify-content: flex-start;
+        }
+
+        #search-input {
+            padding: 4px 8px;
+            font-size: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            flex-grow: 1;
+            max-width: 250px;
+        }
+
+        .search-btn {
+            padding: 4px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            background: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .search-btn:hover { background: #f0f0f0; }
+
+        #search-count {
+            font-size: 11px;
+            color: #666;
+            min-width: 45px;
+            text-align: left;
+        }
+
+        /* --- Ticket Header Pill Styling --- */
+        .ticket-header-style {
+            font-size: 11px;
+            font-weight: bold;
+            color: #333;
+            display: block; 
+            margin-top: 15px;
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background-color: #f4f7f9;
+            border-left: 4px solid #0073e6;
+            border-radius: 4px;
+            
+            /* Text Wrapping Logic */
+            white-space: normal;       /* Allows wrapping */
+            word-wrap: break-word;     /* Legacy support */
+            overflow-wrap: break-word; /* Modern wrapping for long strings */
+            text-align: left;
+            box-sizing: border-box;    /* Ensures padding doesn't push width out */
+        }
+
+        .header-time {
+            color: #d9534f;
+            font-weight: normal;
+        }
+
+        /* --- Comment Styling --- */
+        #ticket-history-container ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-left: 0;
+            text-align: left;
+        }
+
+        #ticket-history-container li {
+            margin-bottom: 8px;
+            padding-left: 0;
+            text-align: left;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* --- Search Highlighting --- */
+        .highlight {
+            background-color: yellow;
+            color: black;
+        }
+
+        .highlight.current {
+            background-color: orange;
         }
     </style>
 </head>
-<body>
 
-    <h3>Last 10 Tickets (Private Comments)</h3>
-    <div id="content">
-        <div class="loading">Initializing widget...</div>
+<body>
+  
+
+    <div class="search-wrapper">
+        <input type="text" id="search-input" placeholder="Find in history...">
+        <span id="search-count">0/0</span>
+        <button class="search-btn" onclick="navigateSearch(-1)">▲</button>
+        <button class="search-btn" onclick="navigateSearch(1)">▼</button>
     </div>
 
+    <div id="ticket-history-container"></div>
+
+    <script src="https://js.zohostatic.com/support/developer_sdk/v1/js/ZohoDeskClientSDK.min.js"></script>
     <script>
-        // Configuration
-        const CONNECTION_LINK_NAME = "zohodesk"; // Must match manifest.json
-        
-        // 1. Initialize the Widget
-        ZOHODESK.extension.onload().then(function (App) {
-            
-            // 2. Get Current Ticket Context
-            ZOHODESK.get('ticket').then(function (ticketData) {
-                const ticket = ticketData.ticket;
-                const contactId = ticket.contactId;
+        let currentIndex = -1;
+        let highlights = [];
 
-                if (!contactId) {
-                    renderError("No Contact ID found on this ticket.");
-                    return;
-                }
-
-                updateStatus(`Fetching history for Contact: ${contactId}...`);
-                fetchLastTenTickets(contactId);
-
-            }).catch(function (err) {
-                renderError("Failed to fetch ticket context: " + JSON.stringify(err));
-            });
-        });
-
-        // 3. Fetch Last 10 Tickets using the Connection
-        function fetchLastTenTickets(contactId) {
-            const reqObj = {
-                url: `https://desk.zoho.com/api/v1/tickets?contactId=${contactId}&limit=10&sortBy=-createdTime`,
-                type: 'GET',
-                connectionLinkName: zohodesk,
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            };
-
-            ZOHODESK.request(reqObj).then(function (response) {
-                // Parse response. Body might be a string or object depending on SDK version
-                let data = (typeof response.body === 'string') ? JSON.parse(response.body) : response.body;
-                
-                // If the response is wrapped in a 'data' property (standard Zoho API)
-                const tickets = data.data || data; 
-
-                if (!tickets || tickets.length === 0) {
-                    renderError("No previous tickets found for this contact.");
-                    return;
-                }
-
-                updateStatus(`Found ${tickets.length} tickets. Scanning for private comments...`);
-                fetchAllComments(tickets);
-
-            }).catch(function (err) {
-                renderError("Error fetching tickets via connection: " + JSON.stringify(err));
-            });
-        }
-
-        // 4. Fetch Comments for all tickets (Parallel Processing)
-        function fetchAllComments(tickets) {
-            const commentPromises = tickets.map(ticket => {
-                return new Promise((resolve) => {
-                    const reqObj = {
-                        url: `https://desk.zoho.com/api/v1/tickets/${ticket.id}/comments`,
-                        type: 'GET',
-                        connectionLinkName: CONNECTION_LINK_NAME,
-                        headers: { "Content-Type": "application/json" }
-                    };
-
-                    ZOHODESK.request(reqObj).then(function (response) {
-                        let data = (typeof response.body === 'string') ? JSON.parse(response.body) : response.body;
-                        let comments = data.data || data;
+        window.onload = function () {
+            ZOHODESK.extension.onload().then(function (App) {
+                ZOHODESK.get("ticket.contactId")
+                    .then(function (ticketResponse) {
+                        let contactId = ticketResponse["ticket.contactId"];
+                        let dataParams = { contactId: contactId };
                         
-                        // Filter for PRIVATE comments only
-                        // Note: API 'isPublic' property might be boolean true/false or string "true"/"false"
-                        const privateComments = comments.filter(c => String(c.isPublic) === "false");
-                        
-                        resolve({
-                            ticketNumber: ticket.ticketNumber,
-                            comments: privateComments
+                        var functionForQuery = {
+                            url: "https://98bb8713-04d1-412f-afd2-a97f09f6046e.sigmaexecution.com/workspace/invokefunction?sigma_function_uuid=e31d4c66-0fbe-4157-82b0-0650c467f44d&sigma_function_version=22&integ_scope_id=778141194&app_install_id={{sigmaInstallId}}&custom_response=true&auth_type=apikey&encapiKey={{enCapApiKey}}",
+                            headers: {},
+                            type: "POST",
+                            postBody: {},
+                            data: dataParams,
+                            connectionLinkName: "",
+                        };
+
+                        ZOHODESK.request(functionForQuery).then((sigmaFunctionResponse) => {
+                            let responseData = typeof sigmaFunctionResponse === 'string' 
+                                ? JSON.parse(sigmaFunctionResponse) 
+                                : sigmaFunctionResponse;
+                            
+                            if (responseData && responseData.response) {
+                                let rawHtml = responseData.response.replace(/\.000Z/g, '');
+
+                                let tempDiv = document.createElement('div');
+                                tempDiv.innerHTML = rawHtml;
+
+                                let elements = tempDiv.querySelectorAll('*');
+                                elements.forEach(el => {
+                                    let content = el.innerHTML;
+                                    
+                                    if (content.includes('Ticket #') && content.includes('Date:')) {
+                                        el.innerHTML = `
+                                            <span>
+                                                ${content.replace(/(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})/, 
+                                                'Date: $1 <span style="color:#ccc; margin:0 5px;">|</span> <span class="header-time">$2</span>')}
+                                            </span>
+                                        `;
+                                        el.classList.add('ticket-header-style');
+                                    }
+                                });
+
+                                document.getElementById("ticket-history-container").innerHTML = tempDiv.innerHTML;
+                            }
+                        }).catch((err) => {
+                            console.log("Error fetching function:", err);
                         });
-                    }).catch(err => {
-                        console.error("Failed to fetch comments for ticket " + ticket.id, err);
-                        resolve({ ticketNumber: ticket.ticketNumber, comments: [] }); // Resolve empty on error to keep others going
+
+                    })
+                    .catch(function (err) {
+                        console.log("Error getting contactId:", err);
                     });
-                });
             });
 
-            // Wait for all requests to finish
-            Promise.all(commentPromises).then(results => {
-                renderComments(results);
+            document.getElementById('search-input').addEventListener('input', function(e) {
+                performSearch(e.target.value);
             });
-        }
+        };
 
-        // 5. Render the Results
-        function renderComments(results) {
-            const container = document.getElementById('content');
-            container.innerHTML = ""; // Clear loading message
+        function performSearch(query) {
+            const container = document.getElementById("ticket-history-container");
+            const prevHighlights = container.querySelectorAll('.highlight');
+            prevHighlights.forEach(el => el.outerHTML = el.innerText);
 
-            let totalFound = 0;
-
-            results.forEach(item => {
-                if (item.comments.length > 0) {
-                    item.comments.forEach(comment => {
-                        totalFound++;
-                        const card = document.createElement('div');
-                        card.className = 'comment-card';
-                        
-                        // Format the date nicely
-                        const date = new Date(comment.createdTime).toLocaleString();
-
-                        card.innerHTML = `
-                            <div class="comment-header">
-                                <span class="ticket-ref">#${item.ticketNumber}</span>
-                                <span>${date}</span>
-                            </div>
-                            <div class="comment-body">
-                                ${comment.content}
-                            </div>
-                        `;
-                        container.appendChild(card);
-                    });
-                }
-            });
-
-            if (totalFound === 0) {
-                container.innerHTML = "<p>No private comments found in the last 10 tickets.</p>";
+            if (!query || query.length < 2) {
+                updateCount(0, 0);
+                return;
             }
+
+            const walk = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
+            let node;
+            const nodesToReplace = [];
+
+            while (node = walk.nextNode()) {
+                if (node.textContent.toLowerCase().includes(query.toLowerCase())) {
+                    nodesToReplace.push(node);
+                }
+            }
+
+            nodesToReplace.forEach(textNode => {
+                const regex = new RegExp(`(${query})`, 'gi');
+                const newHtml = textNode.textContent.replace(regex, '<span class="highlight">$1</span>');
+                const tempSpan = document.createElement('span');
+                tempSpan.innerHTML = newHtml;
+                textNode.parentNode.replaceChild(tempSpan, textNode);
+            });
+
+            highlights = container.querySelectorAll('.highlight');
+            currentIndex = highlights.length > 0 ? 0 : -1;
+            
+            if (currentIndex !== -1) highlightCurrent();
+            updateCount(currentIndex + 1, highlights.length);
         }
 
-        // Helper: Update Status Text
-        function updateStatus(msg) {
-            document.getElementById('content').innerHTML = `<div class="loading">${msg}</div>`;
+        function navigateSearch(direction) {
+            if (highlights.length === 0) return;
+            highlights[currentIndex].classList.remove('current');
+            currentIndex = (currentIndex + direction + highlights.length) % highlights.length;
+            highlightCurrent();
+            updateCount(currentIndex + 1, highlights.length);
         }
 
-        // Helper: Render Error
-        function renderError(msg) {
-            document.getElementById('content').innerHTML = `<div class="error">${msg}</div>`;
+        function highlightCurrent() {
+            const el = highlights[currentIndex];
+            el.classList.add('current');
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function updateCount(curr, total) {
+            document.getElementById('search-count').innerText = `${total > 0 ? curr : 0}/${total}`;
         }
     </script>
+    <script src="./js/extension.js" charset="utf-8"></script>
 </body>
 </html>
